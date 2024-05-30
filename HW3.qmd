@@ -21,7 +21,7 @@ editor: visual
 6.  What is meant by long format data and wide format data? Which do we generally prefer for statistical analysis?
 
 ## Task 2 Reading Delimited Data
-
+### Glass data
 1.  
 
 ```{r}
@@ -37,7 +37,7 @@ glass
 2.  
 
 ```{r}
-glass<- glass %>%
+glass<- glass |>
   mutate(Type_of_Glass1 = case_when(
     Type_of_Glass == 1 ~ "building_windows_float_processed",
     Type_of_Glass == 2 ~ "building_windows_non_float_processed",
@@ -54,7 +54,34 @@ glass
 3.  
 
 ```{r}
-glass_filtered <- glass %>%
+glass_filtered <- glass |>
   filter(Fe < 0.2 & (Type_of_Glass1 == "tableware" | Type_of_Glass1 == "headlamps"))
 glass_filtered
 ```
+### Yeast data
+1.
+```{r}
+yeast <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
+                  col_names = c("seq_name", "mcg", "gvh", "alm", "mit", "erl","pox","vac","nuc","class"))
+yeast
+```
+2.
+```{r}
+yeast_s<- yeast|>
+  select(-c(seq_name, nuc))
+yeast_s
+```
+3.
+```{r}
+yeast_d<- yeast|>
+  select(-c(seq_name, nuc))|>
+  group_by(class)|>
+  mutate(across(c(mcg, gvh, alm, mit, erl, pox, vac), 
+                list(mean = ~ mean(.), median = ~ median(.)),
+                .names = "{.col}_{.fn}"))
+
+yeast_d
+```
+
+
+
