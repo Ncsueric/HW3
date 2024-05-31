@@ -4,6 +4,7 @@ format: html
 editor: visual
 ---
 
+
 ## Task 1: Conceptual Questions
 
 1.  If your working directory is myfolder/homework/, what relative path would you specify to get the file located at myfolder/MyData.csv?
@@ -39,6 +40,7 @@ long form
 
 1.  
 
+
 ```{r}
 library(tidyverse)
 ```
@@ -49,7 +51,9 @@ glass <- read_csv("https://www4.stat.ncsu.edu/~online/datasets/glass.data",
 glass
 ```
 
+
 2.  
+
 
 ```{r}
 glass<- glass |>
@@ -66,7 +70,9 @@ glass<- glass |>
 glass
 ```
 
+
 3.  
+
 
 ```{r}
 glass_filtered <- glass |>
@@ -74,9 +80,11 @@ glass_filtered <- glass |>
 glass_filtered
 ```
 
+
 ### Yeast data
 
 1.  
+
 
 ```{r}
 yeast <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
@@ -84,7 +92,9 @@ yeast <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
 yeast
 ```
 
+
 2.  
+
 
 ```{r}
 yeast_s<- yeast|>
@@ -92,7 +102,9 @@ yeast_s<- yeast|>
 yeast_s
 ```
 
+
 3.  
+
 
 ```{r}
 yeast_d<- yeast|>
@@ -105,9 +117,11 @@ yeast_d<- yeast|>
 yeast_d
 ```
 
+
 ## Task 2: Combining Excel and Delimited Data
 
 1.  
+
 
 ```{r}
 library(readxl)
@@ -120,7 +134,9 @@ white_wine <- read_excel("white-wine.xlsx",
 white_wine
 ```
 
+
 2.  
+
 
 ```{r}
 white_wine2 <- read_excel("white-wine.xlsx", 
@@ -137,7 +153,9 @@ colnames(white_wine3) <- c("fixed_acidity", "volatile_acidity", "citric_acid", "
 white_wine3
 ```
 
+
 3
+
 
 ```{r}
 white_wine4 <- white_wine3 |>
@@ -145,7 +163,9 @@ white_wine4 <- white_wine3 |>
 white_wine4
 ```
 
+
 4
+
 
 ```{r}
 library(readr)
@@ -162,14 +182,18 @@ red_wine1 <- red_wine |>
 red_wine1
 ```
 
+
 5
+
 
 ```{r}
 combine <- dplyr::bind_rows(white_wine4,red_wine1)
 combine
 ```
 
+
 6.7.8.9
+
 
 ```{r}
 combine1 <- combine |>
@@ -181,7 +205,9 @@ combine1 <- combine |>
 combine1
 ```
 
+
 ## Task 3: Database Practice
+
 
 ```{r}
 
@@ -189,7 +215,9 @@ library(DBI)
 library(RSQLite)
 ```
 
+
 1.  
+
 
 ```{r}
 con <- dbConnect(RSQLite::SQLite(), "lahman.db")
@@ -197,7 +225,9 @@ con <- dbConnect(RSQLite::SQLite(), "lahman.db")
 dbListTables(con)
 ```
 
+
 2.  
+
 
 ```{r}
 tbl(con, "Teams")
@@ -205,7 +235,9 @@ tbl(con, "Teams") |>
   filter(yearID == 2015) 
 ```
 
+
 3
+
 
 ```{r}
 tbl(con, sql(
@@ -215,7 +247,9 @@ WHERE (`yearID` = 2015)")
 )
 ```
 
+
 4.  
+
 
 ```{r}
 x <- tbl(con, "HallOfFame")|>
@@ -223,7 +257,9 @@ x <- tbl(con, "HallOfFame")|>
 x
 ```
 
+
 5.  
+
 
 ```{r}
 n5 <- left_join(x,
@@ -233,7 +269,9 @@ n5 <- left_join(x,
 n5
 ```
 
+
 6.  
+
 
 ```{r}
 n6<-tbl(con, "Managers") |>
@@ -248,7 +286,9 @@ collect()
 n6
 ```
 
+
 7.  
+
 
 ```{r}
  inner_join(n5,
@@ -256,3 +296,4 @@ n6
             by=join_by(playerID==playerID))|>
   collect()
 ```
+
