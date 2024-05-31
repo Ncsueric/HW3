@@ -83,5 +83,36 @@ yeast_d<- yeast|>
 yeast_d
 ```
 
+## Task 2: Combining Excel and Delimited Data
+ 1. 
+```{r}
+library(readxl)
+library(dplyr)
+```
 
+```{r}
+white_wine <- read_excel("white-wine.xlsx", 
+                            sheet = excel_sheets("white-wine.xlsx")[1])
+white_wine
+```
+
+2. 
+```{r}
+white_wine2 <- read_excel("white-wine.xlsx", 
+                            sheet = excel_sheets("white-wine.xlsx")[2])
+white_wine2
+```
+```{r}
+white_wine3 <- read_excel("white-wine.xlsx", sheet = excel_sheets("white-wine.xlsx")[1])
+
+colnames(white_wine3) <- c("fixed_acidity", "volatile_acidity", "citric_acid", "residual_sugar", 
+                           "chlorides", "free_sulfur_dioxide", "total_sulfur_dioxide", 
+                           "density", "pH", "sulphates", "alcohol", "quality")
+white_wine3
+```
+3
+```{r}
+white_wine4 <- white_wine3 |>
+  mutate(wine = 1)
+```
 
