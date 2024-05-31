@@ -151,4 +151,70 @@ combine1 <- combine |>
 combine1
 ```
 
+## Task 3: Database Practice
+```{r}
+install.packages("RSQLite")
+library(DBI)
+library(RSQLite)
+```
+1.
+```{r}
+con <- dbConnect(RSQLite::SQLite(), "lahman.db")
+
+dbListTables(con)
+```
+
+2.
+```{r}
+tbl(con, "Teams")
+tbl(con, "Teams") |>
+  filter(yearID == 2015) 
+```
+
+3
+```{r}
+tbl(con, sql(
+"SELECT *
+FROM `Teams`
+WHERE (`yearID` = 2015)")
+)
+```
+
+4.
+```{r}
+x <- tbl(con, "HallOfFame")|>
+  select('playerID','yearID','category')
+x
+```
+
+5.
+```{r}
+n5 <- left_join(x,
+          tbl(con, "People")|>select(playerID,nameFirst,nameLast),
+          by=join_by(playerID==playerID))|>
+  collect()
+n5
+```
+
+6.
+```{r}
+n6<-tbl(con, "Managers") |>
+ select(playerID,G,W,L) |>
+ group_by(playerID) |>
+ summarize(G_managed = sum(G, na.rm = TRUE),
+           Total_W = sum(W, na.rm = TRUE),
+           Total_L = sum(L, na.rm = TRUE))|>
+  mutate(perc=Total_W/G_managed)|>
+  arrange(desc(perc))|>
+collect()
+n6
+```
+
+7.
+```{r}
+ inner_join(n5,
+            n6,
+            by=join_by(playerID==playerID))|>
+  collect()
+```
 
