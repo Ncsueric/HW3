@@ -113,6 +113,42 @@ white_wine3
 3
 ```{r}
 white_wine4 <- white_wine3 |>
-  mutate(wine = 1)
+  mutate(wine = "white")
+white_wine4
 ```
+
+4
+```{r}
+library(readr)
+
+red_wine <- read_delim("red-wine.csv", delim=";")
+
+
+colnames(red_wine) <- c("fixed_acidity", "volatile_acidity", "citric_acid", "residual_sugar", 
+                           "chlorides", "free_sulfur_dioxide", "total_sulfur_dioxide", 
+                           "density", "pH", "sulphates", "alcohol", "quality")
+red_wine1 <- red_wine |>
+  mutate(wine="red")
+
+red_wine1
+```
+
+5
+```{r}
+combine <- dplyr::bind_rows(white_wine4,red_wine1)
+combine
+```
+
+6.7.8.9
+
+```{r}
+combine1 <- combine |>
+  filter(quality > 6.5 & alcohol < 132)|>
+  arrange(quality)|>
+  select(contains("acid"), alcohol, wine, quality)|>
+  group_by(quality)|>
+  mutate(al_mean=mean(alcohol),al_sd=sd(alcohol))
+combine1
+```
+
 
