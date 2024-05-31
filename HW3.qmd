@@ -21,7 +21,9 @@ editor: visual
 6.  What is meant by long format data and wide format data? Which do we generally prefer for statistical analysis?
 
 ## Task 2 Reading Delimited Data
+
 ### Glass data
+
 1.  
 
 ```{r}
@@ -58,20 +60,27 @@ glass_filtered <- glass |>
   filter(Fe < 0.2 & (Type_of_Glass1 == "tableware" | Type_of_Glass1 == "headlamps"))
 glass_filtered
 ```
+
 ### Yeast data
-1.
+
+1.  
+
 ```{r}
 yeast <- read_table("https://www4.stat.ncsu.edu/~online/datasets/yeast.data",
                   col_names = c("seq_name", "mcg", "gvh", "alm", "mit", "erl","pox","vac","nuc","class"))
 yeast
 ```
-2.
+
+2.  
+
 ```{r}
 yeast_s<- yeast|>
   select(-c(seq_name, nuc))
 yeast_s
 ```
-3.
+
+3.  
+
 ```{r}
 yeast_d<- yeast|>
   select(-c(seq_name, nuc))|>
@@ -84,7 +93,9 @@ yeast_d
 ```
 
 ## Task 2: Combining Excel and Delimited Data
- 1. 
+
+1.  
+
 ```{r}
 library(readxl)
 library(dplyr)
@@ -96,12 +107,14 @@ white_wine <- read_excel("white-wine.xlsx",
 white_wine
 ```
 
-2. 
+2.  
+
 ```{r}
 white_wine2 <- read_excel("white-wine.xlsx", 
                             sheet = excel_sheets("white-wine.xlsx")[2])
 white_wine2
 ```
+
 ```{r}
 white_wine3 <- read_excel("white-wine.xlsx", sheet = excel_sheets("white-wine.xlsx")[1])
 
@@ -110,7 +123,9 @@ colnames(white_wine3) <- c("fixed_acidity", "volatile_acidity", "citric_acid", "
                            "density", "pH", "sulphates", "alcohol", "quality")
 white_wine3
 ```
+
 3
+
 ```{r}
 white_wine4 <- white_wine3 |>
   mutate(wine = "white")
@@ -118,6 +133,7 @@ white_wine4
 ```
 
 4
+
 ```{r}
 library(readr)
 
@@ -134,6 +150,7 @@ red_wine1
 ```
 
 5
+
 ```{r}
 combine <- dplyr::bind_rows(white_wine4,red_wine1)
 combine
@@ -152,19 +169,23 @@ combine1
 ```
 
 ## Task 3: Database Practice
+
 ```{r}
 install.packages("RSQLite")
 library(DBI)
 library(RSQLite)
 ```
-1.
+
+1.  
+
 ```{r}
 con <- dbConnect(RSQLite::SQLite(), "lahman.db")
 
 dbListTables(con)
 ```
 
-2.
+2.  
+
 ```{r}
 tbl(con, "Teams")
 tbl(con, "Teams") |>
@@ -172,6 +193,7 @@ tbl(con, "Teams") |>
 ```
 
 3
+
 ```{r}
 tbl(con, sql(
 "SELECT *
@@ -180,14 +202,16 @@ WHERE (`yearID` = 2015)")
 )
 ```
 
-4.
+4.  
+
 ```{r}
 x <- tbl(con, "HallOfFame")|>
   select('playerID','yearID','category')
 x
 ```
 
-5.
+5.  
+
 ```{r}
 n5 <- left_join(x,
           tbl(con, "People")|>select(playerID,nameFirst,nameLast),
@@ -196,7 +220,8 @@ n5 <- left_join(x,
 n5
 ```
 
-6.
+6.  
+
 ```{r}
 n6<-tbl(con, "Managers") |>
  select(playerID,G,W,L) |>
@@ -210,11 +235,11 @@ collect()
 n6
 ```
 
-7.
+7.  
+
 ```{r}
  inner_join(n5,
             n6,
             by=join_by(playerID==playerID))|>
   collect()
 ```
-
